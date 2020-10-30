@@ -14,6 +14,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.cpus = 1
         vb.name = "master"
     end
+
+    master_config.vm.provider "vmware_desktop" do |vmware|
+        vmware.allowlist_verified = true
+        vmware.vmx["memsize"] = "2048"
+        vmware.vmx["numvcpus"] = "1"
+        vmware.vmx["displayName"] = "master"
+    end
     
     master_config.vm.box = "#{os}"
     master_config.vm.host_name = 'saltmaster.local'
@@ -51,6 +58,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           vb.memory = "#{mem}"
           vb.cpus = 1
           vb.name = "#{vmname}"
+      end
+
+      minion_config.vm.provider "vmware_desktop" do |vmware|
+          vmware.vmx["memsize"] = "#{mem}"
+          vmware.vmx["numvcpus"] = "1"
+          vmware.vmx["displayName"] = "#{vmname}"
       end
 
       minion_config.vm.box = "#{os}"
